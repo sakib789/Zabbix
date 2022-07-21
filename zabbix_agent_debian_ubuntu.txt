@@ -1,0 +1,67 @@
+#####################      Zabbix Agent Installion on Ubuntu/Debian OS        ###################### 
+
+
+
+
+###Step 1 – Configure Zabbix Repository
+
+The Zabbix team provides apt repositories for the installation of Zabbix packages. Then add the repository to your system, which is required packages for Zabbix agent. Run the following commands to enable Zabbix repositories.
+
+$wget https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+focal_all.deb
+
+$sudo dpkg -i zabbix-release_5.0-1+focal_all.deb
+
+
+---------------------------------------------------------------------------
+
+###Step 2 – Install Zabbix Agent
+
+As you have successfully added Zabbix apt repositories in your system let’s use the following command to install Zabbix agent using the following command.
+
+$sudo apt install zabbix-agent
+
+
+---------------------------------------------------------------------------
+
+Step 3 – Configure Zabbix Agent
+
+Next, you need to configure Zabbix agent to allow connection from your Zabbix server. For example, your Zabbix server is running with 10.171.x.x IP address. To update this, edit Zabbix agent configuration file /etc/zabbix/zabbix_agentd.conf:
+
+$sudo vi /etc/zabbix/zabbix_agentd.conf
+
+And change the following lines.
+
+#Server=[zabbix server ip]
+#ServerActive=List of comma delimited IP:port (or DNS name:port) pairs of Zabbix servers and Zabbix proxies for active checks.
+#Hostname=[Hostname of client system ]
+
+Server=127.0.0.1,10.171.x.x
+
+ServerActive=127.0.0.1,10.171.x.x
+
+Hostname=your_host_name
+
+
+----------------------------------------------------------------------------
+
+
+Step 4 – Manage Zabbix Service
+
+Now, restart Zabbix service to apply changes. Also enable service to auto start on system boot. Run the following commands to restart and enable Zabbix agent service.
+
+$sudo systemctl restart zabbix-agent
+$sudo systemctl enable zabbix-agent
+$sudo systemctl status zabbix-agent
+
+
+----------------------------------------------------------------------------
+
+
+Step 5 – Enable Firewall
+
+Allow 10050 port for your zabbix server ip in your host 
+
+$sudo ufw allow from 10.171.x.x to any port 10050 proto tcp
+$sudo ufw reload
+$sudo ufw status
+
